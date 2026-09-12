@@ -1,0 +1,12 @@
+
+ 1782489077933 : ::1 : POST : /api/users
+
+ 1782489116897 : ::1 : GET : /api/users/6a3e2f7550b28a34f8f59cd2
+
+ 1782489131143 : ::1 : GET : /api/users/6a3e2f7550b28a34f8f59cd2
+
+ 1782489194191 : ::1 : GET : /api/users
+
+ 1782489630123 : ::1 : GET : /api/users
+
+ 1782489680202 : ::1 : POST : /api/users
