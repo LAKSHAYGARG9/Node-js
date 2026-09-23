@@ -2,9 +2,12 @@ const express = require('express')
 const { connectToDatabase} = require('./connection')
 const urlRouter = require('./routes/url')
 const Url = require('./models/url')
+const cookieParser = require('cookie-parser')
+const { restrictToLoggedinUserOnly, checkAuth } = require('./middleware/auth')
 const path = require('path')
 const staticRouter = require('./routes/staticRoutes')
 const userRouter = require('./routes/user')
+
 
 const app = express()
 
@@ -15,9 +18,10 @@ app.set("views", path.resolve( "./views"))
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
+app.use(cookieParser())
 
-app.use('/url', urlRouter)
-app.use('/', staticRouter)
+app.use('/url', restrictToLoggedinUserOnly, urlRouter)
+app.use('/', checkAuth, staticRouter)
 app.use('/user', userRouter)
 
 app.get('/url/:shortId', async (req, res) => {
@@ -26,7 +30,7 @@ app.get('/url/:shortId', async (req, res) => {
         visitHistory: { timestamp: Date.now() }
     }})
     if(!entry){
-        res.status(400).send('url not founded')
+        return res.status(400).send('url not founded')
     }
 
     return res.redirect(entry.redirectUrl)

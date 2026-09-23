@@ -4,11 +4,19 @@ const Url = require('../models/url')
 
 
 router.get("/", async(req, res) => {
-    const allurls = await Url.find({})
+    if(!req.user) return res.redirect("/login")
+    const allurls = await Url.find({ createdBy: req.user._id})
     return res.render("home", {
         urls: allurls
     })
 })
 
+router.get("/signup", async(req, res) => {
+    return res.render("signup")
+})
+
+router.get("/login", async(req, res) => {
+    return res.render("login")
+})
 
 module.exports = router
